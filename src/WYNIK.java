@@ -16,7 +16,6 @@ public class WYNIK
 	@Transient
 	public List<POMIAR> pomiary;
 	
-	
 	public static WYNIK find(long id) {
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 	    Session session =sessionFactory.openSession();
@@ -25,6 +24,7 @@ public class WYNIK
 		return wynik;
 	}
 	
+	/*
 	public static List<POMIAR> findPomiary(long id) {
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 	    Session session =sessionFactory.openSession();
@@ -33,8 +33,21 @@ public class WYNIK
 	    session.close();
 		return pomiary1;
 	}
+	*/
+
+	public PROBA proba() {
+		PROBA proba = PROBA.find(getPROBA_ID_PROBA());
+		return proba;
+	}
+	
+	public SPECYFIKACJA specyfikacja() {
+		PROBA proba = PROBA.find(getPROBA_ID_PROBA());
+		SPECYFIKACJA specyfikacja = SPECYFIKACJA.find(proba.getSPECYFIKACJA_ID_SPECYFIKACJI());
+		return specyfikacja;
+	}
 	
 	public Double calculate() {
+		/*
 		Double wynik = null;
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 	    Session session =sessionFactory.openSession();
@@ -42,6 +55,9 @@ public class WYNIK
 	    wynik = (pomiary.stream().mapToDouble(a->a.getWARTOSC_NUM()).average()).getAsDouble();
 	    session.close();
 		return wynik;
+		*/
+		
+		return (pomiary.stream().mapToDouble(a->a.getWARTOSC_NUM()).average()).getAsDouble();
 	}
 		
 	public void read(long id) {
@@ -62,8 +78,6 @@ public class WYNIK
 		this.PRACOWNIK_ID_PRACOWNIKA = wynik.PRACOWNIK_ID_PRACOWNIKA;
 		this.JEDN_MIARY_ID_JEDN_MIARY = wynik.JEDN_MIARY_ID_JEDN_MIARY;
 		this.URZADZENIE_ID_URZADZENIA = wynik.URZADZENIE_ID_URZADZENIA;
-		
-		//for (POMIAR p : pomiary) System.out.println(p);
 	}
 	
 	public void write() {

@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.border.TitledBorder;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class Okno1 {
 
@@ -47,6 +49,9 @@ public class Okno1 {
 	private JTextField textFieldResult;
 	private JTextPane textPaneTestedParameter;
 	private JTextPane textPaneSpecificationLimits;
+	
+	private long Id_WYNIK;
+	private WYNIK wynik;
 
 	/**
 	 * Launch the application.
@@ -64,7 +69,7 @@ public class Okno1 {
 		});
 	}
 
-	public void showData(long id) {
+	public void showData() {
 		/*
 		WYNIK wynik = WYNIK.find(id);
 		PROBA proba = PROBA.find(wynik.getPROBA_ID_PROBA());
@@ -91,6 +96,7 @@ public class Okno1 {
 	    textFieldResult.setText(wynik.calculate().toString());
 	    */
 		
+		/*
 		WYNIK wynik = new WYNIK();
 		wynik.read(id);
 		PROBA proba = PROBA.find(wynik.getPROBA_ID_PROBA());
@@ -114,6 +120,29 @@ public class Okno1 {
 	    }
 	    
 	    textFieldResult.setText(wynik.calculate().toString());
+	    */
+		
+		//WYNIK wynik = new WYNIK();
+		//wynik.read(Id_WYNIK);
+		
+		textPaneTestedParameter.setText(wynik.getNAZWA());
+		textPaneSpecificationLimits.setText(wynik.getWYMAGANIA());
+		
+		txtSampleName.setText(wynik.specyfikacja().getNAZWA_MATERIALU());
+		textFieldSampleNumber.setText(wynik.proba().getNR_PROBY());
+		textFieldBatchNumber.setText(wynik.proba().getNR_SERII());
+		
+		DefaultTableModel model = new DefaultTableModel();
+    	model.addColumn("No.");
+    	model.addColumn("Result");
+    	tableMeasurements.setModel(model);
+    	
+    	int iterator = 1;
+	    for (POMIAR p : wynik.pomiary) {
+	    	model.addRow(new Object[]{iterator++,p.getWARTOSC_NUM()});
+	    }
+	    
+	    textFieldResult.setText(wynik.calculate().toString());
 	}
 	
 	/**
@@ -121,7 +150,12 @@ public class Okno1 {
 	 */
 	public Okno1(long id) {
 		initialize();
-		showData(id);
+		
+		this.Id_WYNIK = id;
+		this.wynik = new WYNIK();
+		this.wynik.read(Id_WYNIK);
+		
+		showData();
 	}
 
 	/**
@@ -203,6 +237,7 @@ public class Okno1 {
 		panelResult.add(textPaneSpecificationLimits);
 		
 		textFieldResult = new JTextField();
+		textFieldResult.setHorizontalAlignment(SwingConstants.RIGHT);
 		textFieldResult.setEnabled(false);
 		textFieldResult.setEditable(false);
 		textFieldResult.setBounds(94, 259, 196, 20);
@@ -234,6 +269,24 @@ public class Okno1 {
 		panelMeasurements.add(btnNewButton_2);
 		
 		btnNewButton_3 = new JButton("Add");
+		btnNewButton_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					String valueString = JOptionPane.showInputDialog("Input measured value");
+					Double valueDouble = null;
+					if (valueString != null)  {
+						valueDouble = Double.parseDouble(valueString);
+						wynik.pomiary.add(new POMIAR(0, Id_WYNIK, "NUM", valueDouble, false, "", ""));
+					}
+				}
+				catch (Exception exc) {
+					JOptionPane.showMessageDialog(null,"Incorrect value");
+				} 
+				
+				showData();
+			}
+		});
 		btnNewButton_3.setBounds(202, 478, 89, 23);
 		panelMeasurements.add(btnNewButton_3);
 		
@@ -256,7 +309,7 @@ public class Okno1 {
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				showData(1);
+				showData();
 			}
 		});
 		btnNewButton_1.setBounds(349, 541, 89, 23);

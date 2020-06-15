@@ -73,15 +73,7 @@ public class SamplesList {
 				}
 				tableSample.setModel(model_1);
 				
-				try {
-					String valueString = JOptionPane.showInputDialog("Input measured value");
-					Double valueDouble;
-					if (valueString!=null)  valueDouble = Double.parseDouble(valueString);
-					//System.out.println("Value: " + valueDouble);
-				}
-				catch (Exception exc) {
-					JOptionPane.showMessageDialog(null,"Incorrect value");
-				}
+
 
 				
 			}
