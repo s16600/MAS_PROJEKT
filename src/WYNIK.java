@@ -7,6 +7,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 @Entity(name = "wynik")
@@ -22,6 +23,14 @@ public class WYNIK
 	    WYNIK wynik = (WYNIK) session.createQuery("from WYNIK where ID_WYNIK="+id).uniqueResult();
 	    session.close();
 		return wynik;
+	}
+	
+	public static List<WYNIK> findAllForSample(long id) {
+		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+	    Session session =sessionFactory.openSession();
+	    List<WYNIK> wyniki = session.createQuery("from WYNIK where PROBA_ID_PROBA="+id).list();
+	    session.close();
+		return wyniki;
 	}
 	
 	/*
@@ -81,7 +90,16 @@ public class WYNIK
 	}
 	
 	public void write() {
-		
+		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+	    Session session =sessionFactory.openSession();
+	    Transaction tx = session.beginTransaction();
+	    
+	    int deletedEntities = session.createQuery( "delete from POMIAR where WYNIK_ID_WYNIK="+this.ID_WYNIK ).executeUpdate();
+	    
+	    for(POMIAR p : pomiary) session.save(p);
+	    
+	    tx.commit();
+	    session.close();
 	}
 	
 	

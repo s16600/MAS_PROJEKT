@@ -42,6 +42,29 @@ public class SamplesList {
 	 */
 	public SamplesList() {
 		initialize();
+		
+		DefaultTableModel model_1 = new DefaultTableModel();
+		model_1.addColumn("Sample id");
+		model_1.addColumn("Sample number");
+		model_1.addColumn("Batch number");
+		
+		List<PROBA>lista = PROBA.findAll();
+		
+		for(PROBA p : lista) {
+			model_1.addRow(new Object[] {p.getID_PROBA(),p.getNR_PROBY(),p.getNR_SERII()});
+		}
+		tableSample.setModel(model_1);
+		
+		
+		DefaultTableModel model = new DefaultTableModel(); 
+		model.addColumn("Id.");
+		model.addColumn("Tested parameter");
+		tableParameter.setModel(model);
+		List<WYNIK> wyniki = WYNIK.findAllForSample(1);
+		for(WYNIK w : wyniki) {
+			model.addRow(new Object[] {w.getID_WYNIK(),w.getNAZWA()});
+		}
+		
 	}
 
 	/**
@@ -58,24 +81,16 @@ public class SamplesList {
 		btnEditResult.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				System.out.println("Przycisk");
-				List<Sample> lista = new ArrayList<Sample>();
-				lista = myDBase.readBase();
-				DefaultTableModel model_1 = new DefaultTableModel();
-				model_1.addColumn("Sample id");
-				model_1.addColumn("Sample number");
-				model_1.addColumn("Batch number");
-				
-				for(Sample sample : lista) {
-					//model_1.addRow(new Object[] {sample.idSample, sample.nrProby, sample.nrSerii});
-					//String tekst = JOptionPane.showInputDialog("Wpisz tekst...");
-					model_1.addRow(new Object[] {"","",""});
-				}
-				tableSample.setModel(model_1);
-				
-
-
-				
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							Okno1 window = new Okno1(2);
+							//window.frame.setVisible(true);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 			}
 		});
 		btnEditResult.setBounds(387, 371, 298, 51);
@@ -89,11 +104,6 @@ public class SamplesList {
 		tableParameter = new JTable();
 		tableParameter.setDefaultEditor(Object.class, null);
 		tableParameter.setSelectionMode(ListSelectionModel.SINGLE_SELECTION );
-		DefaultTableModel model = new DefaultTableModel(); 
-		model.addColumn("Id.");
-		model.addColumn("Tested parameter");
-		tableParameter.setModel(model);
-		for (int i = 0; i<5; i++) model.addRow(new Object[]{String.valueOf(i)," "});
 		scrollPaneParameter.setViewportView(tableParameter);
 		
 		scrollPaneSample = new JScrollPane();
@@ -104,14 +114,6 @@ public class SamplesList {
 		tableSample = new JTable();
 		tableSample.setDefaultEditor(Object.class, null);
 		tableSample.setSelectionMode(ListSelectionModel.SINGLE_SELECTION );
-		/*
-		DefaultTableModel model_1 = new DefaultTableModel(); 
-		model_1.addColumn("Sample id");
-		model_1.addColumn("Sample number");
-		model_1.addColumn("Batch number");
-		tableSample.setModel(model_1);
-		for (int i = 0; i<30; i++) model_1.addRow(new Object[]{String.valueOf(i),"123, askdvfksdvfbdfvdfvdkfvdf"});
-		*/
 		scrollPaneSample.setViewportView(tableSample);
 		
 	}

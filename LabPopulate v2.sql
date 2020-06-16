@@ -152,7 +152,13 @@ INSERT INTO wynik (id_wynik, proba_id_proba, typ, nazwa, wymagania, uwagi, spraw
 VALUES (1, 1, 'ASSAY', 'Zawartość witaminy A', '95 - 105 %', '', false, '2019-01-01', 1, 1, 1);
 
 INSERT INTO wynik (id_wynik, proba_id_proba, typ, nazwa, wymagania, uwagi, sprawdzony, data_sprawdzenia, pracownik_id_pracownika, jedn_miary_id_jedn_miary, urzadzenie_id_urzadzenia)
-VALUES (2, 2, 'ASSAY', 'Zawartość witaminy A', '95 - 105 %', '', false, '2019-01-01', 1, 1, 1);
+VALUES (2, 1, 'ASSAY', 'Zawartość witaminy D3', '95 - 105 %', '', false, '2019-01-01', 1, 1, 1);
+
+INSERT INTO wynik (id_wynik, proba_id_proba, typ, nazwa, wymagania, uwagi, sprawdzony, data_sprawdzenia, pracownik_id_pracownika, jedn_miary_id_jedn_miary, urzadzenie_id_urzadzenia)
+VALUES (3, 2, 'ASSAY', 'Zawartość witaminy A', '95 - 105 %', '', false, '2019-01-01', 1, 1, 1);
+
+INSERT INTO wynik (id_wynik, proba_id_proba, typ, nazwa, wymagania, uwagi, sprawdzony, data_sprawdzenia, pracownik_id_pracownika, jedn_miary_id_jedn_miary, urzadzenie_id_urzadzenia)
+VALUES (4, 2, 'ASSAY', 'Zawartość witaminy D3', '95 - 105 %', '', false, '2019-01-01', 1, 1, 1);
 
 /*
 INSERT INTO wynik(id_wynik, proba_id_proba, nazwa_badania, wymagania, zakonczony, data_wykonania, sprawdzony, data_sprawdzenia, srednia, 

@@ -1,5 +1,9 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,6 +19,14 @@ public class PROBA
 	    PROBA proba = (PROBA) session.createQuery("from PROBA where ID_PROBA="+id).uniqueResult();
 	    session.close();
 		return proba;
+	}
+	
+	public static List<PROBA> findAll() {
+		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+	    Session session =sessionFactory.openSession();
+	    List<PROBA> proby = session.createQuery("from PROBA").list();
+	    session.close();
+		return proby;
 	}
 	
 	@Id

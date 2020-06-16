@@ -19,6 +19,7 @@ import javax.swing.UIManager;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -30,7 +31,7 @@ import javax.swing.SwingConstants;
 
 public class Okno1 {
 
-	private JFrame frame;
+	private JDialog frame;
 	private JPanel panelSample;
 	private JPanel panelResult;
 	private JPanel panelMeasurements;
@@ -52,6 +53,9 @@ public class Okno1 {
 	
 	private long Id_WYNIK;
 	private WYNIK wynik;
+	private String NR_PROBY;
+	private String NR_SERII;
+	private String NAZWA_MATERIALU;
 
 	/**
 	 * Launch the application.
@@ -60,8 +64,8 @@ public class Okno1 {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Okno1 window = new Okno1(1);
-					window.frame.setVisible(true);
+					Okno1 window = new Okno1(2);
+					//window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -125,13 +129,6 @@ public class Okno1 {
 		//WYNIK wynik = new WYNIK();
 		//wynik.read(Id_WYNIK);
 		
-		textPaneTestedParameter.setText(wynik.getNAZWA());
-		textPaneSpecificationLimits.setText(wynik.getWYMAGANIA());
-		
-		txtSampleName.setText(wynik.specyfikacja().getNAZWA_MATERIALU());
-		textFieldSampleNumber.setText(wynik.proba().getNR_PROBY());
-		textFieldBatchNumber.setText(wynik.proba().getNR_SERII());
-		
 		DefaultTableModel model = new DefaultTableModel();
     	model.addColumn("No.");
     	model.addColumn("Result");
@@ -143,6 +140,7 @@ public class Okno1 {
 	    }
 	    
 	    textFieldResult.setText(wynik.calculate().toString());
+	    
 	}
 	
 	/**
@@ -151,21 +149,31 @@ public class Okno1 {
 	public Okno1(long id) {
 		initialize();
 		
+		frame.setModal(true);
+		
 		this.Id_WYNIK = id;
 		this.wynik = new WYNIK();
 		this.wynik.read(Id_WYNIK);
 		
+		textPaneTestedParameter.setText(wynik.getNAZWA());
+		textPaneSpecificationLimits.setText(wynik.getWYMAGANIA());
+		txtSampleName.setText(wynik.specyfikacja().getNAZWA_MATERIALU());
+		textFieldSampleNumber.setText(wynik.proba().getNR_PROBY());
+		textFieldBatchNumber.setText(wynik.proba().getNR_SERII());
+		
 		showData();
+		
+		frame.setVisible(true);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+		frame = new JDialog();
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 712, 604);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		panelSample = new JPanel();
@@ -265,6 +273,13 @@ public class Okno1 {
 		panelMeasurements.setLayout(null);
 		
 		btnNewButton_2 = new JButton("Delete");
+		btnNewButton_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				wynik.pomiary.remove(wynik.pomiary.size() - 1);
+				showData();
+			}
+		});
 		btnNewButton_2.setBounds(103, 478, 89, 23);
 		panelMeasurements.add(btnNewButton_2);
 		
@@ -291,6 +306,8 @@ public class Okno1 {
 		panelMeasurements.add(btnNewButton_3);
 		
 		tableMeasurements = new JTable();
+		tableMeasurements.setEnabled(false);
+		tableMeasurements.setRowSelectionAllowed(false);
 		tableMeasurements.setBounds(10, 21, 281, 446);
 		panelMeasurements.add(tableMeasurements);
 		
@@ -299,7 +316,7 @@ public class Okno1 {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				frame.dispose();
-		        System.exit(0);
+		        //System.exit(0);
 			}
 		});
 		btnNewButton.setBounds(250, 541, 89, 23);
@@ -309,7 +326,9 @@ public class Okno1 {
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				showData();
+				wynik.write();
+				frame.dispose();
+		        //System.exit(0);
 			}
 		});
 		btnNewButton_1.setBounds(349, 541, 89, 23);

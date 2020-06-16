@@ -1,11 +1,16 @@
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity(name = "pomiar")
 public class POMIAR
 {
 	
 	@Id
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
 	private long ID_POMIAR;
 	public long getID_POMIAR()
 	{
