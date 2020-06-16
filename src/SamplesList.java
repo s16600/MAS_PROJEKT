@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class SamplesList {
 
@@ -20,6 +22,9 @@ public class SamplesList {
 	private JScrollPane scrollPaneSample;
 	private JTable tableSample;
 	private JTable tableParameter;
+	
+	Integer currentSample;
+	Integer currentResult;
 
 	/**
 	 * Launch the application.
@@ -55,7 +60,7 @@ public class SamplesList {
 		}
 		tableSample.setModel(model_1);
 		
-		
+		/*
 		DefaultTableModel model = new DefaultTableModel(); 
 		model.addColumn("Id.");
 		model.addColumn("Tested parameter");
@@ -64,6 +69,7 @@ public class SamplesList {
 		for(WYNIK w : wyniki) {
 			model.addRow(new Object[] {w.getID_WYNIK(),w.getNAZWA()});
 		}
+		*/
 		
 	}
 
@@ -81,16 +87,20 @@ public class SamplesList {
 		btnEditResult.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							Okno1 window = new Okno1(2);
-							//window.frame.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
+				if ((currentSample !=null) && (currentResult != null)) {
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							try {
+								long IdProba = PROBA.findAll().get(currentSample).getID_PROBA();
+								long IdWynik = WYNIK.findAllForSample(IdProba).get(currentResult).getID_WYNIK();
+								Okno1 window = new Okno1(IdWynik);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
-					}
-				});
+					});
+				}
+				
 			}
 		});
 		btnEditResult.setBounds(387, 371, 298, 51);
@@ -102,6 +112,12 @@ public class SamplesList {
 		frame.getContentPane().add(scrollPaneParameter);
 		
 		tableParameter = new JTable();
+		tableParameter.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				currentResult = tableParameter.getSelectedRow();
+			}
+		});
 		tableParameter.setDefaultEditor(Object.class, null);
 		tableParameter.setSelectionMode(ListSelectionModel.SINGLE_SELECTION );
 		scrollPaneParameter.setViewportView(tableParameter);
@@ -112,6 +128,25 @@ public class SamplesList {
 		frame.getContentPane().add(scrollPaneSample);
 		
 		tableSample = new JTable();
+		tableSample.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				currentSample = tableSample.getSelectedRow();
+				
+				List<PROBA> lista = PROBA.findAll();
+				
+				DefaultTableModel model = new DefaultTableModel(); 
+				model.addColumn("Id.");
+				model.addColumn("Tested parameter");
+				tableParameter.setModel(model);
+				List<WYNIK> wyniki = WYNIK.findAllForSample(lista.get(currentSample).getID_PROBA());
+				for(WYNIK w : wyniki) {
+					model.addRow(new Object[] {w.getID_WYNIK(),w.getNAZWA()});
+				}
+				
+				
+			}
+		});
 		tableSample.setDefaultEditor(Object.class, null);
 		tableSample.setSelectionMode(ListSelectionModel.SINGLE_SELECTION );
 		scrollPaneSample.setViewportView(tableSample);

@@ -65,7 +65,7 @@ public class WYNIK
 	    session.close();
 		return wynik;
 		*/
-		
+		if (pomiary.isEmpty()) return 0D;
 		return (pomiary.stream().mapToDouble(a->a.getWARTOSC_NUM()).average()).getAsDouble();
 	}
 		
