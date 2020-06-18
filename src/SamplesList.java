@@ -70,7 +70,7 @@ public class SamplesList {
 			model.addRow(new Object[] {w.getID_WYNIK(),w.getNAZWA()});
 		}
 		*/
-		
+		frame.setVisible(true);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class SamplesList {
 		tableParameter = new JTable();
 		tableParameter.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				currentResult = tableParameter.getSelectedRow();
 			}
 		});
@@ -129,8 +129,10 @@ public class SamplesList {
 		
 		tableSample = new JTable();
 		tableSample.addMouseListener(new MouseAdapter() {
+
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
+				
 				currentSample = tableSample.getSelectedRow();
 				
 				List<PROBA> lista = PROBA.findAll();
@@ -143,7 +145,6 @@ public class SamplesList {
 				for(WYNIK w : wyniki) {
 					model.addRow(new Object[] {w.getID_WYNIK(),w.getNAZWA()});
 				}
-				
 				
 			}
 		});

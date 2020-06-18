@@ -1,3 +1,4 @@
+import java.awt.EventQueue;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,20 +15,19 @@ import org.hibernate.cfg.Configuration;
 public class Main {
 
 	public static void main(String[] args) {
+	
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					SamplesList window = new SamplesList();
+					//window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		
-		/*
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-	    Session session =sessionFactory.openSession();
-	    
-	    List<POMIAR> pomiary = session.createQuery("from POMIAR").list();
-	    for (POMIAR p : pomiary) {
-	    	System.out.println(p);
-	    }
-	    
-	    session.close();
-		*/
-		
-		System.out.println("*** Koniec programu projekt MAS ***");
+		//System.out.println("*** Koniec programu projekt MAS ***");
 	}
 
 }

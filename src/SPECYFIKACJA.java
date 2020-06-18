@@ -1,8 +1,10 @@
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.cfg.Configuration;
 
 @Entity(name = "specyfikacja")
@@ -17,6 +19,8 @@ public class SPECYFIKACJA
 	}
 	
 	@Id
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
 	private long ID_SPECYFIKACJI;
 	public long getID_SPECYFIKACJI()
 	{

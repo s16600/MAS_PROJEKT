@@ -16,6 +16,7 @@
     <mapping class="WYNIK"/>
     <mapping class="PROBA"/>
     <mapping class="SPECYFIKACJA"/>
+    <mapping class="DOSTAWCA"/>
     </session-factory>  
   
 </hibernate-configuration>  

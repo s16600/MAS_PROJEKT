@@ -1,6 +1,7 @@
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.swing.table.DefaultTableModel;
@@ -8,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.cfg.Configuration;
 
 @Entity(name = "wynik")
@@ -131,6 +133,8 @@ public class WYNIK
 	
 	
 	@Id
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
 	private long ID_WYNIK;
 	public long getID_WYNIK()
 	{
